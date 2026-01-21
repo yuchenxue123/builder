@@ -40,7 +40,7 @@ jobs:
             echo "Upstream latest tag is empty. Skipping."
             echo "trigger=false" >> $GITHUB_OUTPUT
           else
-            RELEASE_TAG="${{ matrix.prefix }}$LATEST_TAG"
+            RELEASE_TAG="${{ matrix.prefix }}-$LATEST_TAG"
             echo "Generate release tag: $RELEASE_TAG"
           
             HTTP_CODE=$(curl -o /dev/null -s -w "%{http_code}" https://api.github.com/repos/${{ github.repository }}/releases/tags/$RELEASE_TAG)
