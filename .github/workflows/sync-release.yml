@@ -1,0 +1,100 @@
+name: Sync Release
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+
+jobs:
+  check-and-release:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - repo: CCBlueX/LiquidBounce
+            prefix: lbng
+            branch: nextgen
+            gradle: 9.2.1
+            java: 21
+
+
+    steps:
+      - name: check new release
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          LATEST_TAG=$(gh api repos/${{ matrix.repo }}/releases/latest --jq .tag_name)
+          echo "Upstream latest release tag: $LATEST_TAG"
+
+          if [ "$LATEST_TAG" = "null" ]; then
+            echo "No releases found in upstream repository. Skipping."
+            echo "trigger=false" >> $GITHUB_OUTPUT
+          elif [ -z "$LATEST_TAG" ]; then
+            echo "Upstream latest tag is empty. Skipping."
+            echo "trigger=false" >> $GITHUB_OUTPUT
+          else
+            RELEASE_TAG="${{ matrix.prefix }}$LATEST_TAG"
+            echo "Generate release tag: $RELEASE_TAG"
+          
+            HTTP_CODE=$(curl -o /dev/null -s -w "%{http_code}" https://api.github.com/repos/${{ github.repository }}/releases/tags/$RELEASE_TAG)
+          
+            if [ "$HTTP_CODE" == "200" ]; then
+              echo "Tag $RELEASE_TAG already exists. Skipping."
+              echo "trigger=false" >> $GITHUB_OUTPUT
+            else
+              echo "Processing new release..."
+              echo "trigger=true" >> $GITHUB_OUTPUT
+              echo "upstream_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+              echo "release_tag=$RELEASE_TAG" >> $GITHUB_OUTPUT
+            fi
+          fi
+         
+
+      - name: checkout
+        if: steps.check.outputs.trigger == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ matrix.repo }}
+          ref: ${{ steps.check.outputs.upstream_tag }}
+          fetch-depth: 0
+
+      - name: setup java
+        if: steps.check.outputs.trigger == 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+
+      - name: setup gradle
+        if: steps.check.outputs.trigger == 'true'
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: ${{ matrix.gradle }}
+
+      - name: build
+        if: steps.check.outputs.trigger == 'true'
+        run: gradle build
+
+      - name: release
+        if: steps.check.outputs.trigger == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.check.outputs.release_tag }}
+          name: ${{ steps.check.outputs.release_tag }}
+          body: |
+            自动构建
+            链接: https://github.com/${{ matrix.repo }}/releases/tag/${{ steps.check.outputs.upstream_tag }}
+          files: |
+            build/libs/*.jar
+            !build/libs/*-sources.jar
+            !build/libs/*-dev.jar
+            !build/libs/*-javadoc.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
