@@ -20,7 +20,7 @@ jobs:
       - name: build
         uses: ./.github/actions/build-repository-java
         with:
-          working-directory: ./CCBlueX/LiquidBounce
+          working-path: ./CCBlueX/LiquidBounce
           repository: CCBlueX/LiquidBounce
           branch: nextgen
           java-version: 21

@@ -3,7 +3,7 @@ author: yuchenxue
 description: build java repository
 
 inputs:
-  working-directory:
+  working-path:
     description: work path to build
     required: true
   repository:
@@ -24,7 +24,7 @@ runs:
       with:
         repository: ${{ inputs.repository }}
         ref: ${{ inputs.branch }}
-        path: ${{ inputs.working-directory }}
+        path: ${{ inputs.working-path }}
 
     - name: validate gradle wrapper
       uses: gradle/actions/wrapper-validation@v6
@@ -33,23 +33,23 @@ runs:
       uses: actions/setup-java@v5
       with:
         distribution: 'temurin'
-        java-version: ${{ inputs.jdk }}
+        java-version: ${{ inputs.java-version }}
 
     - name: make gradlew executable
       shell: bash
       run: chmod +x ./gradlew
-      working-directory: ${{ inputs.working-directory }}
+      working-directory: ${{ inputs.working-path }}
 
     - name: build
       shell: bash
       run: ./gradlew build
-      working-directory: ${{ inputs.working-directory }}
+      working-directory: ${{ inputs.working-path }}
 
     - name: upload build artifacts
       uses: actions/upload-artifact@v7
       with:
         name: Artifact
         path: build/libs/
-      working-directory: ${{ inputs.working-directory }}
+      working-directory: ${{ inputs.working-path }}
 
 
