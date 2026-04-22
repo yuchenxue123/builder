@@ -1,4 +1,4 @@
-name: build-graphite.yml
+name: Build Graphite
 
 on:
   workflow_dispatch:
