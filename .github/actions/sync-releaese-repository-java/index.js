@@ -22,7 +22,7 @@ const localRepository = process.env.INPUT_LOCAL_REPOSITORY;
 
         if (!latestVersion || latestVersion === 'null') {
             console.log("No releases found or tag is empty. Skipping.");
-            return setOutput({ trigger: 'false' });
+            return setOutput("trigger", "false");
         }
 
         console.log(`Upstream latest release tag: ${latestVersion}`);
@@ -35,16 +35,12 @@ const localRepository = process.env.INPUT_LOCAL_REPOSITORY;
 
         if (hasTagExist.status === 200) {
             console.log(`Tag ${releaseTag} already exists. Skipping.`);
-            setOutput({ trigger: 'false' });
+            setOutput("trigger", "false");
         } else {
-            console.log("Processing new release...");
-            setOutput({
-                trigger: 'true',
-                upstream_tag: latestVersion,
-                release_tag: releaseTag
-            });
+            setOutput("trigger", "true");
+            setOutput("upstream_tag", latestVersion);
+            setOutput("release_tag", releaseTag);
         }
-
     } catch (error) {
         console.error(`Error: ${error.message}`);
         process.exit(1);
