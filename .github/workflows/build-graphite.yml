@@ -7,6 +7,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout local repository
+        uses: actions/checkout@v6
+
       - name: build
         uses: ./.github/actions/build-repository-java
         with:
