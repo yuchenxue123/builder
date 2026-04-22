@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: build
-        uses: yuchenxue123/builder/.github/actions/build-repository-java
+        uses: ./.github/workflows/build-action.yml
         with:
           working-path: ./SonaGG/Graphite
           repository: SonaGG/Graphite
