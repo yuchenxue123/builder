@@ -18,6 +18,11 @@ jobs:
             branch: nextgen
             gradle: 9.2.1
             java: 21
+          - repo: SonaGG/Graphite
+            prefix: graphite
+            branch: 1.8.9
+            gradle: 9.2.1
+            java: 21
 
     steps:
       - name: checkout
@@ -52,6 +57,5 @@ jobs:
           name: ${{ matrix.prefix }}-${{ github.sha }}
           path: |
             build/libs/*.jar
-            !build/libs/*-sources.jar
             !build/libs/*-dev.jar
             !build/libs/*-javadoc.jar
