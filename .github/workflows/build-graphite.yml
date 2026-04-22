@@ -1,0 +1,15 @@
+name: build-graphite.yml
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: build
+        uses: .github/actions/build-repository-java
+        with:
+          repository: SonaGG/Graphite
+          branch: 1.8.9
+          java-version: 21

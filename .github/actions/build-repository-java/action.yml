@@ -1,0 +1,48 @@
+name: build-repository-java
+author: yuchenxue
+description: build java repository
+
+inputs:
+  repository:
+    description: repository to build
+    required: true
+  branch:
+    description: branch to build
+    required: true
+  java-version:
+    description: java version
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: checkout
+      uses: actions/checkout@v6
+      with:
+        repository: ${{ inputs.repository }}
+        ref: ${{ inputs.branch }}
+
+    - name: validate gradle wrapper
+      uses: gradle/actions/wrapper-validation@v6
+
+    - name: setup java
+      uses: actions/setup-java@v5
+      with:
+        distribution: 'temurin'
+        java-version: ${{ inputs.jdk }}
+
+    - name: make gradlew executable
+      shell: bash
+      run: chmod +x ./gradlew
+
+    - name: build
+      shell: bash
+      run: ./gradlew build
+
+    - name: upload build artifacts
+      uses: actions/upload-artifact@v7
+      with:
+        name: Artifact
+        path: build/libs/
+
+

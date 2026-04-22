@@ -1,0 +1,22 @@
+name: Build LiquidBounce
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: build
+        uses: .github/actions/build-repository-java
+        with:
+          repository: CCBlueX/LiquidBounce
+          branch: nextgen
+          java-version: 21
