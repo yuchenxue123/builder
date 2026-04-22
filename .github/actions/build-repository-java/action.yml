@@ -33,12 +33,10 @@ runs:
       uses: actions/setup-java@v5
       with:
         distribution: 'temurin'
-        java-version: ${{ inputs.java-version }}
 
     - name: make gradlew executable
       shell: bash
       run: chmod +x ./gradlew
-      working-directory: ${{ inputs.working-path }}
 
     - name: build
       shell: bash
@@ -49,7 +47,6 @@ runs:
       uses: actions/upload-artifact@v7
       with:
         name: Artifact
-        path: build/libs/
-      working-directory: ${{ inputs.working-path }}
+        path: ${{ inputs.working-path }}/build/libs/
 
 
