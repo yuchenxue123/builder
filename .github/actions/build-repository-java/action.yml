@@ -3,6 +3,9 @@ author: yuchenxue
 description: build java repository
 
 inputs:
+  working-directory:
+    description: work path to build
+    required: true
   repository:
     description: repository to build
     required: true
@@ -21,6 +24,7 @@ runs:
       with:
         repository: ${{ inputs.repository }}
         ref: ${{ inputs.branch }}
+        path: ${{ inputs.working-directory }}
 
     - name: validate gradle wrapper
       uses: gradle/actions/wrapper-validation@v6
@@ -34,15 +38,18 @@ runs:
     - name: make gradlew executable
       shell: bash
       run: chmod +x ./gradlew
+      working-directory: ${{ inputs.working-directory }}
 
     - name: build
       shell: bash
       run: ./gradlew build
+      working-directory: ${{ inputs.working-directory }}
 
     - name: upload build artifacts
       uses: actions/upload-artifact@v7
       with:
         name: Artifact
         path: build/libs/
+      working-directory: ${{ inputs.working-directory }}
 
 

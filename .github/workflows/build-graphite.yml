@@ -13,6 +13,7 @@ jobs:
       - name: build
         uses: ./.github/actions/build-repository-java
         with:
+          working-directory: ./SonaGG/Graphite
           repository: SonaGG/Graphite
           branch: 1.8.9
           java-version: 21
