@@ -1,0 +1,35 @@
+name: sync-releaese-repository-java
+author: yuchenxue
+description: sync release repository java
+
+inputs:
+  repository:
+    description: repository to build
+    required: true
+  branch:
+    description: branch to build
+    required: true
+  java-version:
+    description: java version
+    required: true
+  release-prefix:
+    description: release prefix
+    required: true
+  token:
+    description: github token
+    required: true
+  local-repository:
+    description: local repository
+    required: true
+
+outputs:
+  trigger:
+    description: trigger sync release
+  upstream_tag:
+    description: upstream release tag
+  release_tag:
+    description: release tag
+
+runs:
+  using: node20
+  main: index.js

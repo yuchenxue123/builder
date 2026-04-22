@@ -1,0 +1,42 @@
+name: Sync Release LiquidBounce
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+jobs:
+  check-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check new release
+        id: check
+        uses: yuchenxue123/builder/.github/actions/sync-releaese-repository-java@main
+        with:
+          repository: CCBlueX/LiquidBounce
+          branch: nextgen
+          java-version: 21
+          release-prefix: lbng
+          token: ${{ secrets.GITHUB_TOKEN }}
+          local-repository: ${{ github.repository }}
+
+      - name: build
+        uses: yuchenxue123/builder/.github/actions/build-repository-java@main
+        if: steps.check.outputs.trigger == 'true'
+        with:
+          repository: CCBlueX/LiquidBounce
+          branch: nextgen
+          java-version: 21
+
+      - name: release
+        if: steps.check.outputs.trigger == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.check.outputs.release_tag }}
+          name: ${{ steps.check.outputs.release_tag }}
+          body: |
+            自动构建
+            链接: https://github.com/CCBlueX/LiquidBounce/releases/tag/${{ steps.check.outputs.upstream_tag }}
+          files: |
+            build/libs/*.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
