@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: build
-        uses: .github/actions/build-repository-java
+        uses: ./.github/actions/build-repository-java
         with:
           repository: SonaGG/Graphite
           branch: 1.8.9

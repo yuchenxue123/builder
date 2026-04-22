@@ -15,7 +15,7 @@ jobs:
           node-version: 20
 
       - name: build
-        uses: .github/actions/build-repository-java
+        uses: ./.github/actions/build-repository-java
         with:
           repository: CCBlueX/LiquidBounce
           branch: nextgen
