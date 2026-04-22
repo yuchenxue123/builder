@@ -9,18 +9,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout local repository
-        uses: actions/checkout@v6
-
       - name: setup node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
       - name: build
-        uses: ./.github/actions/build-repository-java
+        uses: yuchenxue123/builder/.github/actions/build-repository-java@main
         with:
-          working-path: ./CCBlueX/LiquidBounce
           repository: CCBlueX/LiquidBounce
           branch: nextgen
           java-version: 21

@@ -7,13 +7,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout local repository
-        uses: actions/checkout@v6
-
       - name: build
-        uses: ./.github/workflows/build-action.yml
+        uses: yuchenxue123/builder/.github/actions/build-repository-java@main
         with:
-          working-path: ./SonaGG/Graphite
           repository: SonaGG/Graphite
           branch: 1.8.9
           java-version: 21
