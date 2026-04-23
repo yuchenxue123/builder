@@ -12,13 +12,13 @@ inputs:
   java-version:
     description: java version
     required: true
-  release-prefix:
+  prefix:
     description: release prefix
     required: true
   token:
     description: github token
     required: true
-  local-repository:
+  local:
     description: local repository
     required: true
 

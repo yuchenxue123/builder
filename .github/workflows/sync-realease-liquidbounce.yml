@@ -15,9 +15,9 @@ jobs:
           repository: CCBlueX/LiquidBounce
           branch: nextgen
           java-version: 21
-          release-prefix: lbng
+          prefix: lbng
           token: ${{ secrets.GITHUB_TOKEN }}
-          local-repository: ${{ github.repository }}
+          local: ${{ github.repository }}
 
       - name: build
         uses: yuchenxue123/builder/.github/actions/build-repository-java@main

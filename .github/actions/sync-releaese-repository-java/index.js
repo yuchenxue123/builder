@@ -1,10 +1,10 @@
 const fs = require('fs');
 
 const repository = process.env.INPUT_REPOSITORY;
-const prefix = process.env.INPUT_REALEASE_PREFIX;
+const prefix = process.env.INPUT_PREFIX;
 
 const token = process.env.INPUT_TOKEN;
-const localRepository = process.env.INPUT_LOCAL_REPOSITORY;
+const localRepository = process.env.INPUT_LOCAL;
 
 
 (async () => {
