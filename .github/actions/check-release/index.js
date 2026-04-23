@@ -25,7 +25,7 @@ const localRepository = process.env.INPUT_LOCAL_REPOSITORY;
             return setOutput("trigger", "false");
         }
 
-        console.log(`Upstream latest release tag: ${latestVersion}`);
+        console.log(`Upstream repository latest release tag: ${latestVersion}`);
 
         const releaseTag = `${prefix}-${latestVersion}`;
 
@@ -40,6 +40,7 @@ const localRepository = process.env.INPUT_LOCAL_REPOSITORY;
             setOutput("trigger", "true");
             setOutput("upstream_tag", latestVersion);
             setOutput("release_tag", releaseTag);
+            setOutput("upstream_url", data['html_url']);
         }
     } catch (error) {
         console.error(`Error: ${error.message}`);

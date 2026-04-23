@@ -32,8 +32,8 @@ jobs:
           tag_name: ${{ steps.check.outputs.release_tag }}
           name: ${{ steps.check.outputs.release_tag }}
           body: |
-            自动构建
-            链接: https://github.com/CCBlueX/LiquidBounce/releases/tag/${{ steps.check.outputs.upstream_tag }}
+            该版本是自动构建和释放的
+            链接: ${{ steps.check.outputs.upstream_url }}
           files: |
             build/libs/*.jar
         env:
