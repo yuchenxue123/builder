@@ -6,19 +6,13 @@ inputs:
   repository:
     description: repository to build
     required: true
-  branch:
-    description: branch to build
-    required: true
-  java-version:
-    description: java version
-    required: true
-  release-prefix:
+  release_prefix:
     description: release prefix
     required: true
-  token:
+  github_token:
     description: github token
     required: true
-  local-repository:
+  local_repository:
     description: local repository
     required: true
 

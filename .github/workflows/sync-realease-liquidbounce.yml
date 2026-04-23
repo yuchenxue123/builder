@@ -10,21 +10,19 @@ jobs:
     steps:
       - name: check new release
         id: check
-        uses: yuchenxue123/builder/.github/actions/sync-releaese-repository-java@main
+        uses: yuchenxue123/builder/.github/actions/check-release@main
         with:
           repository: CCBlueX/LiquidBounce
-          branch: nextgen
-          java-version: 21
-          prefix: lbng
-          token: ${{ secrets.GITHUB_TOKEN }}
-          local: ${{ github.repository }}
+          release_prefix: lbng
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          local_repository: ${{ github.repository }}
 
       - name: build
         uses: yuchenxue123/builder/.github/actions/build-repository-java@main
         if: steps.check.outputs.trigger == 'true'
         with:
           repository: CCBlueX/LiquidBounce
-          branch: nextgen
+          branch: ${{ steps.check.outputs.upstream_tag }}
           java-version: 21
 
       - name: release
