@@ -1,5 +1,7 @@
 const fs = require('fs');
 
+console.log("Current Inputs:", Object.keys(process.env).filter(k => k.startsWith('INPUT_')));
+
 const repository = process.env.INPUT_REPOSITORY;
 const prefix = process.env.INPUT_RELEASE_PREFIX;
 
