@@ -23,7 +23,7 @@ jobs:
         with:
           repository: CCBlueX/LiquidBounce
           branch: ${{ steps.check.outputs.upstream_tag }}
-          java-version: 21
+          java-version: 25
 
       - name: release
         if: steps.check.outputs.trigger == 'true'
